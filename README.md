@@ -1,2 +1,2 @@
-# online-meeting-status-indicator
-Update and Display a web page that shows your current meeting status
+# Online Meeting Status Indicator
+Update and Display a web page that shows your current meeting status.
