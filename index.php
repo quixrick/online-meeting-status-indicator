@@ -2,6 +2,12 @@
 
 # Login form
 
+$error = '';
+if ((isset($_GET['error'])) && (!empty($_GET['error']))) {
+	$error = '<br><ul>'.json_decode($_GET['error']).'</ul><br>';
+}
+
+
 
 print '
 <html>
@@ -14,6 +20,7 @@ print '
 
 <body>
 
+'.$error.'
 
 <form action="login.php" method="post">
 
