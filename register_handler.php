@@ -54,7 +54,8 @@ if (check_if_user_exists($email_address, $errors, $conn)) {
 
 
 	$password_hash = get_password_hash($email_address, $password, $errors);
-	add_user($first_name, $last_name, $email_address, $password_hash, $errors, $conn);
+	$user_hash = generate_user_hash($conn);
+	add_user($first_name, $last_name, $email_address, $password_hash, $user_hash, $errors, $conn);
 
 
 
@@ -153,7 +154,7 @@ function check_if_user_exists($email_address, &$errors, $conn) {
 // ************************************ { 2022-05-02 - RC } ************************************
 // CREATE THE DATABASE RECORD FOR THE USER
 // *********************************************************************************************
-function add_user($first_name, $last_name, $email_address, $password_hash, &$errors, $conn) {
+function add_user($first_name, $last_name, $email_address, $password_hash, $user_hash, &$errors, $conn) {
 
 
 
@@ -165,7 +166,8 @@ function add_user($first_name, $last_name, $email_address, $password_hash, &$err
 			Email = :email_address,
 			First_Name = :first_name,
 			Last_Name = :last_name,
-			Password = :password
+			Password = :password,
+			User_Hash = :user_hash
 			
 	");
 
@@ -175,7 +177,8 @@ function add_user($first_name, $last_name, $email_address, $password_hash, &$err
 			':email_address' => $email_address,
 			':first_name' => $first_name,
 			':last_name' => $last_name,
-			':password' => $password_hash
+			':password' => $password_hash,
+			':user_hash' => $user_hash
 		)
 	);
 
@@ -188,6 +191,96 @@ function add_user($first_name, $last_name, $email_address, $password_hash, &$err
 }
 
 
+
+
+
+
+// ************************************ { 2022-05-02 - RC } ************************************
+// GENERATE A USER HASH FOR THE SHARABLE URL
+// *********************************************************************************************
+function generate_user_hash($conn) {
+
+
+
+	// ************************************ { 2022-05-02 - RC } ************************************
+	// SET THE DEFAULTS
+	// *********************************************************************************************
+	$desired_string_length = 6;
+	$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	$user_hash = '';
+	$is_id_unique = false;
+
+
+
+
+
+	do {
+
+
+
+		// ************************************ { 2022-05-02 - RC } ************************************
+		// LOOP THROUGH AND PICK OUT A CHARACTER
+		// *********************************************************************************************
+		for ($i = 0; $i < $desired_string_length; $i++) {
+			$index = rand(0, strlen($characters) - 1);
+			$user_hash .= $characters[$index];
+		}
+
+
+
+
+
+
+		// ************************************ { 2022-05-02 - RC } ************************************
+		// CHECK TO SEE IF THIS ID ALREADY EXISTS IN THE DATABSE
+		// *********************************************************************************************
+		$q_check_if_id_exists = $conn->prepare("
+			SELECT
+				COUNT(*) AS id_count
+			FROM
+				users
+			WHERE
+				User_Hash = :user_hash
+		");
+
+		$q_check_if_id_exists->execute(
+			array(
+				':user_hash' => $user_hash
+			)
+		);
+
+		$row_check_if_id_exists = $q_check_if_id_exists->fetchAll(PDO::FETCH_ASSOC);
+
+		foreach ($row_check_if_id_exists AS $check_if_id_exists) {
+
+			$id_count = $check_if_id_exists['id_count'];
+
+		}
+
+
+
+
+
+
+		// ************************************ { 2022-05-02 - RC } ************************************
+		// IF THE ID IS UNIQUE, CONTINUE
+		// *********************************************************************************************
+		if ($id_count == 0) {
+			$is_id_unique = true;
+		}
+
+
+
+	}
+	while (!$is_id_unique);
+
+
+
+	return $user_hash;
+
+
+
+}
 
 
 
