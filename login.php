@@ -28,7 +28,7 @@ $username = '';
 $password = '';
 
 
-$username = $_POST['username'];
+$username = $_POST['email_address'];
 $password = $_POST['password'];
 
 
@@ -135,7 +135,7 @@ function authenticate_user($username, $password_hash, &$errors, $conn) {
 		FROM
 			users
 		WHERE
-			Username = :username
+			Email = :username
 	");
 
 	$q_get_user_db_password->execute(
