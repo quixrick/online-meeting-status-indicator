@@ -39,7 +39,10 @@ print '
   <td colspan="2" align="right"><input type="submit" name="submit" value="Log In">
 </tr>
 <tr>
-  <td colspam="2" align="center"><a href="register.php">Create an account</a></td>
+  <td colspan="2" align="left"><a href="forgot_password.php">Forgot Password</a></td>
+</tr>
+<tr>
+  <td colspan="2" align="center"><a href="register.php">Create an account</a></td>
 </tr>
 </table>
 
