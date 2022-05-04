@@ -13,6 +13,8 @@
 // LOAD THE CONFIG FILE AND CONNECT TO THE DATABASE
 // *********************************************************************************************
 require_once 'config.php';
+require_once 'header.php';
+require_once 'footer.php';
 
 $conn = new PDO("mysql:host=".$settings['db_host'].";dbname=".$settings['db_name'].";",$settings['db_user'],$settings['db_pass']);
 
@@ -46,15 +48,42 @@ if (!$user_hash) {
 
 
 
-
-print get_status($user_hash, $errors, $conn);
-
+$status_array = format_display($header, get_status($user_hash, $errors, $conn));
 
 
 
 
+print $status_array['header'];
 
 
+
+print '
+<div style="width: 100%; text-align: center; margin: auto;">
+<div class="status_text">';
+
+//print preg_replace('~\h~', '&nbsp;', $status_text);
+print $status_array['status_message'];
+
+print '</div>
+</div>';
+
+require_once 'footer.php';
+
+/*
+
+{"icon":"<i class=\"fa-solid fa-phone\"><\/i>","background-color":"#ff6300","color":"#ffffff","font-family":"verdana"}
+
+
+$array = array(
+
+	'icon' => '<i class="fa-solid fa-phone"></i>',
+	'background-color' => '#ff6300';
+	'color' => '#ffffff';
+	'font-size'
+	'font-family' =>  verdana;
+
+);
+*/
 
 
 
@@ -79,7 +108,9 @@ function get_status($user_hash, &$errors, $conn) {
 	// ************************************ { 2022-05-03 - RC } ************************************
 	// SET THE DEFAULTS
 	// *********************************************************************************************
+	$return_array = array();
 	$status_message = 'Available';
+	$stauts_format = '';
 
 
 
@@ -91,7 +122,8 @@ function get_status($user_hash, &$errors, $conn) {
 	// *********************************************************************************************
 	$q_get_user_hash_information = $conn->prepare("
 		SELECT
-			statuses.Status_Message
+			statuses.Status_Message,
+			statuses.Status_Format
 		FROM
 			users,
 			statuses
@@ -141,12 +173,94 @@ function get_status($user_hash, &$errors, $conn) {
 	foreach ($row_get_user_hash_information AS $get_user_hash_information) {
 
 		$status_message = $get_user_hash_information['Status_Message'];
+		$status_format = $get_user_hash_information['Status_Format'];
 
 	}
 
 
 
-	return $status_message;
+
+
+
+	// ************************************ { 2022-05-04 - RC } ************************************
+	// BUILD OUT THE RETURN ARRAY
+	// *********************************************************************************************
+	$return_array['status_format'] = $status_format;
+	$return_array['status_message'] = $status_message;
+
+
+
+	return $return_array;
+
+
+
+}
+
+
+
+
+
+
+function format_display($header, $status_array) {
+
+
+
+	// ************************************ { 2022-05-04 - RC } ************************************
+	// SET THE DEFAULTS
+	// *********************************************************************************************
+	$return_array = array();
+	$status_message = $status_array['status_message'];
+	$status_format = $status_array['status_format'];
+
+
+
+
+
+
+	// ************************************ { 2022-05-04 - RC } ************************************
+	// PARSE THE FORMAT
+	// *********************************************************************************************
+	$status_format_array = json_decode($status_format, true); 
+
+
+
+
+
+
+	// ************************************ { 2022-05-04 - RC } ************************************
+	// FORMAT THE HEADER
+	// *********************************************************************************************
+	$header = preg_replace('~^body {\v\K(?=\h*display: flex;)~sm', "\tbackground-color: ".$status_format_array['background-color'].";\n", $header);
+
+
+
+
+
+
+	// ************************************ { 2022-05-04 - RC } ************************************
+	// FORMAT THE MESSAGE
+	// *********************************************************************************************
+	$status_message = $status_format_array['icon'].' '.$status_message;
+	$status_message = '<span style="color: '.$status_format_array['color'].'; font-weight: '.$status_format_array['font-weight'].'; font-family: '.$status_format_array['font-family'].';">'.$status_message.'</span>';
+// $status_format_array['icon']
+// $status_format_array['color']
+// $status_format_array['font-family']
+// $status_format_array['font-weight']
+
+
+
+
+
+
+	// ************************************ { 2022-05-04 - RC } ************************************
+	// BUILD OUT THJE RETURN ARRAY
+	// *********************************************************************************************
+	$return_array['header'] = $header;
+	$return_array['status_message'] = $status_message;
+
+
+
+	return $return_array;
 
 
 
