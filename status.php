@@ -45,14 +45,33 @@ if (!$user_hash) {
 
 
 
-print '<br>USER HASH: '.$user_hash;
-
 
 
 print get_status($user_hash, $errors, $conn);
 
 
 
+
+
+
+
+
+
+
+
+
+// ************************************ { 2022-05-03 - RC } ************************************
+// FUNCTIONS
+// *********************************************************************************************
+
+
+
+
+
+
+// ************************************ { 2022-05-03 - RC } ************************************
+// GET THE USER'S STATUS FROM THE DATABASE
+// *********************************************************************************************
 function get_status($user_hash, &$errors, $conn) {
 
 
@@ -68,7 +87,7 @@ function get_status($user_hash, &$errors, $conn) {
 
 
 	// ************************************ { 2022-05-03 - RC } ************************************
-	// GRAB THE STATUS
+	// QUERY THE DB FOR THE STATUS
 	// *********************************************************************************************
 	$q_get_user_hash_information = $conn->prepare("
 		SELECT
@@ -96,18 +115,29 @@ function get_status($user_hash, &$errors, $conn) {
 	);
 
 	$row_get_user_hash_information = $q_get_user_hash_information->fetchAll(PDO::FETCH_ASSOC);
-	
-	
-	print "<br>COUNTER: ".count($row_get_user_hash_information);
-	
+
+
+
+
+
+
+	// ************************************ { 2022-05-03 - RC } ************************************
+	// IF WE HAVE NO RECORD FOR THAT USER, DO A REDIRECT TO THE ERROR PAGE
+	// *********************************************************************************************
 	if (count($row_get_user_hash_information) == 0) {
-		$errors[] = 'No records for the id of '.$user_hash;
+		$errors[] = 'No records for the id of '.$user_hash.'. Please check the spelling and try again.';
 		handle_errors($errors);
 		return;
 	}
-	
-	
 
+
+
+
+
+
+	// ************************************ { 2022-05-03 - RC } ************************************
+	// GRAB THE STATUS MESSAGE
+	// *********************************************************************************************
 	foreach ($row_get_user_hash_information AS $get_user_hash_information) {
 
 		$status_message = $get_user_hash_information['Status_Message'];
@@ -121,19 +151,6 @@ function get_status($user_hash, &$errors, $conn) {
 
 
 }
-
-
-
-
-/*
-* GET THE PARAMETER FOR THE URL
-* CHECK TO SEE IF WE FIND THE USER HASH
-	-> IF NOT, SEND TO 404
-	-> OTHERWISE, LOAD THE USER'S STATUS
-*/
-
-
-
 
 
 
