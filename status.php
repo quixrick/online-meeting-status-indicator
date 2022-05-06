@@ -230,7 +230,7 @@ function format_display($header, $status_array) {
 	// ************************************ { 2022-05-04 - RC } ************************************
 	// FORMAT THE HEADER
 	// *********************************************************************************************
-	$header = preg_replace('~^body {\v\K(?=\h*display: flex;)~sm', "\tbackground-color: ".$status_format_array['background-color'].";\n", $header);
+	$header = preg_replace('~(^body {)~sm', "$1\n\tbackground-color: ".$status_format_array['background-color'].";\n", $header);
 
 
 
