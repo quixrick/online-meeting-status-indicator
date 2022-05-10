@@ -14,6 +14,7 @@
 // *********************************************************************************************
 require_once 'config.php';
 require_once 'header.php';
+require_once 'header_close.php';
 require_once 'footer.php';
 
 $conn = new PDO("mysql:host=".$settings['db_host'].";dbname=".$settings['db_name'].";",$settings['db_user'],$settings['db_pass']);
@@ -54,7 +55,7 @@ $status_array = format_display($header, get_status($user_hash, $errors, $conn));
 
 
 print $status_array['header'];
-
+print $header_close;
 
 
 print '

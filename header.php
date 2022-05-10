@@ -23,7 +23,7 @@ $header = <<<EOF
 }
 
 body {
-	display: flex;
+	display: block;
 }
 
 .status_text {
@@ -35,10 +35,20 @@ body {
 	text-align: center;
 	/* line-width: 40vw; */
 }
+
+
+
+
+.statuses_active .statuses_default .statuses_other {
+	display: block;
+}
+
+
+
 </style>
 
-</head>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
 
-<body>
-	
+
 EOF;
