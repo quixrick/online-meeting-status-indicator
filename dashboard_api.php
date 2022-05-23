@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 # DASHBOARD
 # /dashboard.php
@@ -112,7 +112,7 @@ function get_status_list($user_array, $errors, $conn) {
 
 		$status_array = array();
 		$status_array['reference'] = $get_status_list['Reference'];
-		$status_array['status_message'] = $get_status_list['Status_Message'];
+		$status_array['status_message'] = preg_replace('~<br>.*~i', '', $get_status_list['Status_Message']);
 		$status_array['status_start'] = $get_status_list['Status_Start_Utc'];
 		$status_array['status_end'] = $get_status_list['Status_End_Utc'];
 		$status_array['default_status'] = $get_status_list['Default_Status'];

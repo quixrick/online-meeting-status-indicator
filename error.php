@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 # ERROR PAGE
 # /error.php

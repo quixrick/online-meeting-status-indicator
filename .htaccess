@@ -1,11 +1,12 @@
-﻿ <IfModule mod_rewrite.c>
+<IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 RewriteBase /online-meeting-status-indicator/
 
 
-RewriteRule ^status/(.*)$ status.php [R=301,P]
+#RewriteRule ^status/(.*)$ status.php [R=301,P]
 
+RewriteRule ^status/(.*)$ /online-meeting-status-indicator/status.php?user_hash=$1 [R=301,P]
 
 
 </IfModule>

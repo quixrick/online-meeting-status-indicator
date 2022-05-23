@@ -1,4 +1,5 @@
-﻿<?php
+<?php
+
 
 
 $header = <<<EOF
@@ -7,6 +8,8 @@ $header = <<<EOF
 <html>
 
 <head>
+
+<meta http-equiv="refresh" content="30">
 
 <title>Online Status Indicator</title>
 
@@ -19,6 +22,7 @@ $header = <<<EOF
 	height: 100%;
 	width: 100%;
 	margin: 0;
+	top: 50%;
 
 }
 
@@ -26,7 +30,7 @@ body {
 	display: block;
 }
 
-.status_text {
+.status_text1 {
 	display: inline-block;
 	margin: auto;
 	/* border: 1px solid #0000ff; */
@@ -36,7 +40,15 @@ body {
 	/* line-width: 40vw; */
 }
 
-
+.status_text {
+  display: flex;
+  justify-content: center;
+  font-size: 10vw;
+  align-items: center;
+  /* height: 200px; */
+  height: 100%;
+  /* border: 3px solid green; */
+}
 
 
 .statuses_active .statuses_default .statuses_other {

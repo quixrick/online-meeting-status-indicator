@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 # DASHBOARD
 # /dashboard.php
@@ -7,12 +7,16 @@ require_once 'header.php';
 require_once 'header_close.php';
 require_once 'footer.php';
 
-print preg_replace('~(\.body\s*{\s*)display: flex~', '$1display: block', $header);
+$header = preg_replace('~(\.body\s*{\s*)display: flex~', '$1display: block', $header);
+$header = preg_replace('~<meta http-equiv="refresh" content="30">~', '', $header);
+
+print $header;
 
 print '
 <script>
 
 var jwt = localStorage.getItem(\'jwt\');
+console.log(jwt);
 
 $.ajax({
 	type: "POST",

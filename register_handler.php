@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 // REGISTRATION HANDLER
 // /register_handler.php

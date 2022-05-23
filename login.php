@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 // LOGIN
 // /login.php
@@ -32,8 +32,8 @@ $username = $_POST['email_address'];
 $password = $_POST['password'];
 
 
-print '<br>Username: '.$username;
-print '<br>Password: '.$password;
+// print '<br>Username: '.$username;
+// print '<br>Password: '.$password;
 
 
 

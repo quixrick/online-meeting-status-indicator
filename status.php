@@ -1,11 +1,8 @@
-﻿<?php
+<?php
 
 
 # STATUS
 # /status.php
-
-
-
 
 
 
@@ -21,6 +18,7 @@ $conn = new PDO("mysql:host=".$settings['db_host'].";dbname=".$settings['db_name
 
 
 
+// print '<pre>'; print_r($_SERVER); print '</pre>'; exit;
 
 
 
@@ -28,9 +26,12 @@ $conn = new PDO("mysql:host=".$settings['db_host'].";dbname=".$settings['db_name
 // SET THE DEFAULTS
 // *********************************************************************************************
 $user_hash = false;
-if ((isset($_SERVER['REQUEST_URI'])) && (!empty($_SERVER['REQUEST_URI']))) {
-	$user_hash = preg_replace('~^.*/status/(.*)$~', '$1', $_SERVER['REQUEST_URI']);
+if ((isset($_GET['user_hash'])) && (!empty($_GET['user_hash']))) {
+	$user_hash = $_GET['user_hash'];
 }
+//if ((isset($_SERVER['REQUEST_URI'])) && (!empty($_SERVER['REQUEST_URI']))) {
+//	$user_hash = preg_replace('~^.*/status/(.*)$~', '$1', $_SERVER['REQUEST_URI']);
+//}
 
 
 
